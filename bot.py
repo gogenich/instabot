@@ -115,7 +115,7 @@ class InstaBot:
             except Exception:
 
                 with open('logi.txt', 'a') as f:
-                    f.writelines(f'link {teg} delete')
+                    f.writelines(f'link {teg} delete\n')
 
             sleep(randint(20, 70) / 10)
 
@@ -138,8 +138,8 @@ class InstaBot:
             except Exception:
 
                 with open('logi.txt', 'a') as f:
-                    f.writelines(f'link {teg} delete')
-            sleep(randint(100, 160) / 10)
+                    f.writelines(f'link {teg} delete\n')
+            sleep(randint(30, 60))
     def exit_account(self):
         self.driver.quit()
 
@@ -147,8 +147,10 @@ class InstaBot:
 """пример работы бота"""
 now = datetime.now()
 
-log = '*****'
-pas = '*****'
+# log = ''
+# pas = ''
+
+
 
 account = InstaBot(log, pas)
 account.input_account()
@@ -157,14 +159,22 @@ sleep(5)
 
 hashteg = 'зима'
 
-random_post = [randint(5, 15)for el in range(randint(5, 15))]
-posts = account.collect_post(hashteg, sum(random_post))
+random_post_like = [randint(5, 15)for el in range(randint(5, 15))]
+random_post_comment = [randint(1, 5)for el in range(randint(5, 10))]
+
+posts = account.collect_post(hashteg, sum(random_post_like)+sum(random_post_comment))
 start = 0
 
-for el in random_post:
+for el in random_post_like:
     finish = el + start
     account.like(posts[start:finish])
-    start = el
+    start = finish
+    sleep(randint(600, 1200))
+
+for el in random_post_comment:
+    finish = el + start
+    account.comment(posts[start:finish])
+    start = finish
     sleep(randint(600, 1200))
 
 finish_time = f'finish_time = {datetime.now()}'
