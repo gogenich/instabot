@@ -18,6 +18,11 @@ class InstaBot:
         """создание драйвера"""
         chrome_options = Options()
         chrome_options.add_argument("start-maximized")
+        chrome_options.add_argument('lang=zh_CN.UTF-8')
+        #chrome_options.add_argument('user-agent="MQQBrowser/26 Mozilla/5.0 (Linux; U; Android 2.3.7; zh-cn; MB200 Build/GRJ22; CyanogenMod-7) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"')
+        prefs = {"profile.managed_default_content_settings.images": 2}
+        chrome_options.add_experimental_option("prefs", prefs)
+
         self.driver = webdriver.Chrome(executable_path='./chromedriver', options=chrome_options)
 
     def input_account(self):
@@ -117,7 +122,7 @@ class InstaBot:
                 with open('logi.txt', 'a') as f:
                     f.writelines(f'link {teg} delete\n')
 
-            sleep(randint(20, 70) / 10)
+            sleep(randint(10, 30))
 
     def comment(self, tegi):
         """функция которая принимает список ссылок на посты, переходит по ним и комментирует"""
@@ -147,17 +152,21 @@ class InstaBot:
 """пример работы бота"""
 now = datetime.now()
 
-# log = ''
-# pas = ''
+# log = '*****'
+# pas = '*****'
 
+# log = 'lariyoga@yandex.ru'
+# pas = 'Radik2018'
 
+#log = 'misik_29'
+#pas = '4815162342maksik'
 
 account = InstaBot(log, pas)
 account.input_account()
 
 sleep(5)
 
-hashteg = 'зима'
+hashteg = 'yogatime'
 
 random_post_like = [randint(5, 15)for el in range(randint(5, 15))]
 random_post_comment = [randint(1, 5)for el in range(randint(5, 10))]
