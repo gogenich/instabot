@@ -49,9 +49,11 @@ class InstaBot:
         general_list = self.driver.find_element_by_xpath("//div[@class= 'q9xVd']")
         general_list.click()
         sleep(randint(10, 30)/10)
+
         '''отключили всплывающее окно'''
         self.driver.find_element_by_xpath("//button[text() = 'Не сейчас']").click()
 
+        """записываем ход программы в фаил логи"""
         with open('logi.txt', 'a') as f:
             f.writelines(f'bot input_account {datetime.now()}\n')
 
@@ -68,13 +70,15 @@ class InstaBot:
             for i in range(len(links)):
                 link = links[i].get_attribute('href')
                 result.append(link)
+
             '''скролим вниз'''
             actions = ActionChains(self.driver)
             actions.move_to_element(links[-1]).key_down(Keys.ENTER)
             actions.perform()
             sleep(randint(10, 30) / 10)
             result = list(set(result))
-            '''формируем отчет'''
+
+            """записываем ход программы в фаил логи"""
             with open('logi.txt', 'a') as f:
                 f.writelines(f'collect {len(result)} links {datetime.now()}\n')
 
@@ -83,7 +87,9 @@ class InstaBot:
         return result
 
     def collect_users(self, user, n):
+
         """функция собирающая ссылки друзей пользователя"""
+
         self.driver.get(f'https://www.instagram.com/{user}/followers/')
         sleep(randint(10, 30) / 10)
         self.driver.find_element_by_xpath("//a[text() = ' подписчиков']").click()
@@ -100,7 +106,7 @@ class InstaBot:
             users[-1].send_keys(Keys.PAGE_DOWN)
             users_links = list(set(users_links))
 
-            '''формируем отчет'''
+            """записываем ход программы в фаил логи"""
             with open('logi.txt', 'a') as f:
                 f.writelines(f'collect {len(users_links)} users {datetime.now()}\n')
 
@@ -110,6 +116,7 @@ class InstaBot:
     def like(self, tegi):
 
         """функция которая принимает список ссылок на посты, переходит по ним и лайкает"""
+
         for teg in tegi:
             self.driver.get(teg)
             try:
@@ -125,7 +132,9 @@ class InstaBot:
             sleep(randint(10, 30))
 
     def comment(self, tegi):
+
         """функция которая принимает список ссылок на посты, переходит по ним и комментирует"""
+
         fail = open('comment_data', 'r')
         com = [el.strip() for el in fail]
         for teg in tegi:
@@ -145,21 +154,17 @@ class InstaBot:
                 with open('logi.txt', 'a') as f:
                     f.writelines(f'link {teg} delete\n')
             sleep(randint(30, 60))
+
     def exit_account(self):
+
         self.driver.quit()
 
 
 """пример работы бота"""
 now = datetime.now()
 
-# log = '*****'
-# pas = '*****'
-
-# log = 'lariyoga@yandex.ru'
-# pas = 'Radik2018'
-
-#log = 'misik_29'
-#pas = '4815162342maksik'
+log = '*****'
+pas = '*****'
 
 account = InstaBot(log, pas)
 account.input_account()
